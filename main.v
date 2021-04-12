@@ -45,17 +45,15 @@ fn (mut state State) load(rom []byte) ?u16 {
 }
 
 fn (mut state State) execute() {
-	rom := state.rom
-
 	mut pc := 0
 	for pc != 0xffff {
-		match rom[pc] {
+		match state.rom[pc] {
 			// NOP
 			0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 {}
 			// LXI B d16
 			0x01 {
-				state.b = rom[pc + 2]
-				state.c = rom[pc + 1]
+				state.b = state.rom[pc + 2]
+				state.c = state.rom[pc + 1]
 				pc += 2
 			}
 			// STAX B
@@ -74,13 +72,13 @@ fn (mut state State) execute() {
 			}
 			// STA a16
 			0x32 {
-				address := u16(rom[pc + 2]) << 8 | u16(rom[pc + 1])
+				address := u16(state.rom[pc + 2]) << 8 | u16(state.rom[pc + 1])
 				state.ram[address] = byte(state.a)
 				pc += 2
 			}
 			// LDA a16
 			0x3a {
-				state.a = state.ram[int(rom[pc + 2]) << 8 | int(rom[pc + 1])]
+				state.a = state.ram[int(state.rom[pc + 2]) << 8 | int(state.rom[pc + 1])]
 				pc += 2
 			}
 			// INR A
