@@ -60,10 +60,17 @@ fn (mut state State) execute() {
 			}
 			// INX B
 			0x03 {
+				result = 1 + u16(state.b) << 8 | u16(state.c)
+				state.b = byte(result >> 8)
+				state.c = byte(result & 0xFF)
+			}
+			// INR B
+			0x04 {
 				// TODO flags
 				state.b++
 			}
-			0x04 {
+			// DCR B
+			0x05 {
 				// TODO flags
 				state.b--
 			}
