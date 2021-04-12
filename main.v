@@ -60,7 +60,7 @@ fn (mut state State) execute() {
 			}
 			// INX B
 			0x03 {
-				result := 1 + u16(state.b) << 8 | u16(state.c)
+				result := 1 + join(state.b, state.c)
 				state.b = byte(result >> 8)
 				state.c = byte(result & 0xFF)
 			}
@@ -81,12 +81,12 @@ fn (mut state State) execute() {
 			}
 			// STA a16
 			0x32 {
-				state.ram[(u16(state.rom[pc + 2]) << 8) | u16(state.rom[pc + 1])] = state.a
+				state.ram[join(state.rom[pc + 2], state.rom[pc + 1])] = state.a
 				pc += 2
 			}
 			// LDA a16
 			0x3a {
-				state.a = state.ram[int(state.rom[pc + 2]) << 8 | int(state.rom[pc + 1])]
+				state.a = state.ram[join(state.rom[pc + 2], state.rom[pc + 1])]
 				pc += 2
 			}
 			// INR A
