@@ -4,15 +4,12 @@ struct State {
 mut:
 	ram [255]byte
 	rom [65535]byte // TODO make this immutable with a constructor?
-	// sign
-	// zero
-	// 0 literal
-	// aux carry
-	// 0 literal
-	// parity
-	// 1 literal
-	// carry
-	flags byte = 0b00000010
+
+	acarry bool
+	carry  bool
+	parity bool
+	sign   bool
+	zero   bool
 
 	a  byte
 	b  byte
