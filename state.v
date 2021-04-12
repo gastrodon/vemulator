@@ -132,23 +132,3 @@ fn (state State) print() {
 
 	println('')
 }
-
-fn main() {
-	mut state := State{}
-
-	state.load([
-		// INR A
-		byte(0x3c),
-		// INR A
-		0x3c,
-		// INR A
-		0x3c,
-		// STA
-		0x32,
-		0x05,
-		0x00,
-	]) or { panic('no bytes were written') }
-
-	state.execute()
-	state.print()
-}
