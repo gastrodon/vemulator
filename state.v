@@ -45,63 +45,51 @@ fn (mut state State) execute() {
 	mut pc := 0
 	for pc != 0xffff {
 		match state.rom[pc] {
-			// NOP
 			0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 {}
-			// LXI B d16
-			0x01 {
+			lxi_b {
 				state.b = state.rom[pc + 2]
 				state.c = state.rom[pc + 1]
 				pc += 2
 			}
-			// STAX B
-			0x02 {
+			stax_b {
 				state.b = state.a >> 8
 				state.c = state.a & 0xff
 			}
-			// INX B
-			0x03 {
+			inx_b {
 				result := 1 + join(state.b, state.c)
 				state.b = byte(result >> 8)
 				state.c = byte(result & 0xff)
 			}
-			// INR B
-			0x04 {
+			inr_b {
 				// TODO flags
 				state.b++
 			}
-			// DCR B
-			0x05 {
+			dcr_b {
 				// TODO flags
 				state.b--
 			}
-			// MVI B d8
-			0x06 {
+			mvi_b {
 				state.b = state.rom[pc + 1]
 				pc++
 			}
-			// RCL
-			0x07 {
+			rcl {
 				state.acarry = 1 == state.a >> 7
 				state.a = (state.a << 1) | byte(state.acarry)
 			}
-			// DAD B
-			0x09 {
+			dad_b {
 				hl := join(state.h, state.l) + join(state.b, state.c)
 				state.h = byte(hl >> 8)
 				state.l = byte(hl & 0xff)
 			}
-			// STA a16
-			0x32 {
+			sta {
 				state.ram[join(state.rom[pc + 2], state.rom[pc + 1])] = state.a
 				pc += 2
 			}
-			// LDA a16
-			0x3a {
+			lda {
 				state.a = state.ram[join(state.rom[pc + 2], state.rom[pc + 1])]
 				pc += 2
 			}
-			// INR A
-			0x3c {
+			inr_a {
 				state.a++
 			}
 			else {}
