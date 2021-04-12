@@ -143,10 +143,7 @@ fn main() {
 		0x32,
 		0x05,
 		0x00,
-	]) or {
-		println('no bytes were written')
-		return
-	}
+	]) or { panic('no bytes were written') }
 
 	state.execute()
 	state.print()
