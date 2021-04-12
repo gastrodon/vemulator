@@ -3,6 +3,7 @@ module main
 struct State {
 mut:
 	ram [255]byte
+	rom [65535]byte // TODO make this immutable with a constructor?
 	// sign
 	// zero
 	// 0 literal
@@ -24,15 +25,30 @@ mut:
 	pc u16
 }
 
-fn (mut state State) execute(rom []byte) {
-	rom_length := rom.len
-	if rom_length > 1 << 16 - 1 {
-		println('rom length must be countable by u16')
-		return
+// load will take some bytes and load it into the machine's rom
+// the number of bytes written is returned, or none
+fn (mut state State) load(rom []byte) ?u16 {
+	if rom.len > 0xFFFF {
+		println('ROM must be indexable by u16')
+		return none
 	}
 
+	mut index := u16(0)
+	mut buffer := [0xffff]byte{}
+	for code in rom {
+		buffer[index] = code
+		index++
+	}
+
+	state.rom = buffer
+	return index
+}
+
+fn (mut state State) execute() {
+	rom := state.rom
+
 	mut pc := 0
-	for pc != rom_length {
+	for pc != 0xffff {
 		match rom[pc] {
 			// NOP
 			0x00, 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38 {}
@@ -109,8 +125,7 @@ fn (state State) print() {
 fn main() {
 	mut state := State{}
 
-	// state.execute([byte(0x10), byte(0x3c), byte(0x00), byte(0x32), byte(0x7)])
-	state.execute([
+	state.load([
 		// INR A
 		byte(0x3c),
 		// INR A
@@ -121,6 +136,11 @@ fn main() {
 		0x32,
 		0x05,
 		0x00,
-	])
+	]) or {
+		println('no bytes were written')
+		return
+	}
+
+	state.execute()
 	state.print()
 }
