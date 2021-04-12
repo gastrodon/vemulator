@@ -7,5 +7,5 @@ fn test_state_pc() {
 
 	state.execute()
 
-	assert state.pc == 0xFFFF
+	assert state.pc == 0xffff
 }
