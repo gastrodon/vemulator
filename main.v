@@ -81,15 +81,9 @@ fn (mut state State) execute(rom []byte) {
 }
 
 fn (state State) print() {
-	print('a  $state.a\t')
-	print('sp $state.sp\t')
-	print('pc $state.pc \n')
-	print('b  $state.b\t')
-	print('c  $state.c\t')
-	print('d  $state.d \n')
-	print('e  $state.e\t')
-	print('h  $state.h\t')
-	print('l  $state.l \n')
+	print('a  $state.a\tsp $state.sp\tpc $state.pc\n')
+	print('b  $state.b\tc  $state.c\td  $state.d \n')
+	print('e  $state.e\th  $state.h\tl  $state.l \n')
 
 	print('\nmem  | ')
 
