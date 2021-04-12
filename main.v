@@ -60,7 +60,7 @@ fn (mut state State) execute() {
 			}
 			// INX B
 			0x03 {
-				result = 1 + u16(state.b) << 8 | u16(state.c)
+				result := 1 + u16(state.b) << 8 | u16(state.c)
 				state.b = byte(result >> 8)
 				state.c = byte(result & 0xFF)
 			}
@@ -73,6 +73,11 @@ fn (mut state State) execute() {
 			0x05 {
 				// TODO flags
 				state.b--
+			}
+			// MVI B d8
+			0x06 {
+				state.b = state.rom[pc + 1]
+				pc++
 			}
 			// STA a16
 			0x32 {
