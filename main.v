@@ -25,7 +25,7 @@ mut:
 // load will take some bytes and load it into the machine's rom
 // the number of bytes written is returned, or none
 fn (mut state State) load(rom []byte) ?u16 {
-	if rom.len > 0xFFFF {
+	if rom.len > 0xffff {
 		println('ROM must be indexable by u16')
 		return none
 	}
@@ -56,13 +56,13 @@ fn (mut state State) execute() {
 			// STAX B
 			0x02 {
 				state.b = state.a >> 8
-				state.c = state.a & 0xFF
+				state.c = state.a & 0xff
 			}
 			// INX B
 			0x03 {
 				result := 1 + join(state.b, state.c)
 				state.b = byte(result >> 8)
-				state.c = byte(result & 0xFF)
+				state.c = byte(result & 0xff)
 			}
 			// INR B
 			0x04 {
