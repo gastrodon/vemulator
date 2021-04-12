@@ -94,6 +94,23 @@ fn test_rcl_acarry() {
 	assert state.a == 0b00000001
 }
 
+fn test_dad_b() {
+	mut state := State{
+		b: 0x22
+		c: 0x22
+		h: 0xcc
+		l: 0xff
+	}
+
+	state.load([byte(0x09)]) or { assert false }
+	state.execute()
+
+	target := 0xccff + 0x2222
+	assert join(state.h, state.l) == target
+	assert state.h == target >> 8
+	assert state.l == target & 0xff
+}
+
 fn test_sta_a16() {
 	mut state := State{}
 	state.load([byte(0x3c), 0x3c, 0x32, 0x05, 0x00]) or { assert false }

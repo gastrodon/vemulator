@@ -84,6 +84,12 @@ fn (mut state State) execute() {
 				state.acarry = 1 == state.a >> 7
 				state.a = (state.a << 1) | byte(state.acarry)
 			}
+			// DAD B
+			0x09 {
+				hl := join(state.h, state.l) + join(state.b, state.c)
+				state.h = byte(hl >> 8)
+				state.l = byte(hl & 0xff)
+			}
 			// STA a16
 			0x32 {
 				state.ram[join(state.rom[pc + 2], state.rom[pc + 1])] = state.a
