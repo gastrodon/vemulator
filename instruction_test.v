@@ -72,6 +72,28 @@ fn test_mvi_b_d8() {
 	assert state.b == 0xcc
 }
 
+fn test_rcl() {
+	mut state := State{
+		a: 0x01
+	}
+
+	state.load([byte(0x07)]) or { assert false }
+	state.execute()
+
+	assert state.a == 0x02
+}
+
+fn test_rcl_acarry() {
+	mut state := State{
+		a: 0b10000000
+	}
+
+	state.load([byte(0x07)]) or { assert false }
+	state.execute()
+
+	assert state.a == 0b00000001
+}
+
 fn test_sta_a16() {
 	mut state := State{}
 	state.load([byte(0x3c), 0x3c, 0x32, 0x05, 0x00]) or { assert false }
