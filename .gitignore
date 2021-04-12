@@ -6,3 +6,5 @@ vemulator
 *.so
 *.dylib
 *.dll
+
+rom.bin
