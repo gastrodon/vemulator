@@ -104,8 +104,8 @@ fn (mut state State) execute() {
 
 fn (state State) print() {
 	print('a  $state.a\tsp $state.sp\tpc $state.pc\n')
-	print('b  $state.b\tc  $state.c\td  $state.d \n')
-	print('e  $state.e\th  $state.h\tl  $state.l \n')
+	print('b  $state.b\tc  $state.c\td  $state.d\tac ${x_if(state.acarry)}\tc  ${x_if(state.carry)}\n')
+	print('e  $state.e\th  $state.h\tl  $state.l\tp  ${x_if(state.parity)}\ts  ${x_if(state.sign)}\tz  ${x_if(state.zero)}\n')
 
 	print('\nmem  | ')
 
