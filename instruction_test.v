@@ -72,7 +72,7 @@ fn test_mvi_b_d8() {
 	assert state.b == 0xcc
 }
 
-fn test_rcl() {
+fn test_rlc() {
 	mut state := State{
 		a: 0x01
 	}
@@ -83,7 +83,7 @@ fn test_rcl() {
 	assert state.a == 0x02
 }
 
-fn test_rcl_acarry() {
+fn test_rlc_acarry() {
 	mut state := State{
 		a: 0b10000000
 	}
