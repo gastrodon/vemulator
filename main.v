@@ -81,8 +81,7 @@ fn (mut state State) execute() {
 			}
 			// STA a16
 			0x32 {
-				address := u16(state.rom[pc + 2]) << 8 | u16(state.rom[pc + 1])
-				state.ram[address] = byte(state.a)
+				state.ram[(u16(state.rom[pc + 2]) << 8) | u16(state.rom[pc + 1])] = state.a
 				pc += 2
 			}
 			// LDA a16
