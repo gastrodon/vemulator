@@ -45,6 +45,10 @@ fn (mut state State) set_acarry(value byte) {
 	state.acarry = value >> 4 & 1 == 1
 }
 
+fn (mut state State) set_sign(value byte) {
+	state.sign = value >> 7 & 1 == 1
+}
+
 fn (mut state State) set_zero(value byte) {
 	state.zero = value == 0
 }
@@ -72,11 +76,13 @@ fn (mut state State) execute() {
 				state.b++
 				state.set_acarry(state.b)
 				state.set_zero(state.b)
+				state.set_sign(state.b)
 			}
 			dcr_b {
 				state.b--
 				state.set_acarry(state.b)
 				state.set_zero(state.b)
+				state.set_sign(state.b)
 			}
 			mvi_b {
 				state.b = state.rom[pc + 1]
