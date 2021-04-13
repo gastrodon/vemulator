@@ -32,6 +32,34 @@ fn test_sub_carry() {
 	assert !carry
 }
 
+fn test_add_carry_u16() {
+	mut result, mut carry := add_carry_u16(0xffff, 1)
+	assert result == 0
+	assert carry
+
+	result, carry = add_carry_u16(1, 1)
+	assert result == 2
+	assert !carry
+
+	result, carry = add_carry_u16(100, 0)
+	assert result == 100
+	assert !carry
+}
+
+fn test_sub_carry_u16() {
+	mut result, mut carry := sub_carry_u16(0, 1)
+	assert result == 0xffff
+	assert carry
+
+	result, carry = sub_carry_u16(1, 1)
+	assert result == 0
+	assert !carry
+
+	result, carry = sub_carry_u16(100, 0)
+	assert result == 100
+	assert !carry
+}
+
 fn test_shift_left_wrap_carry() {
 	mut result, mut carry := shift_left_wrap_carry(0b10000001)
 	assert result == 0b11

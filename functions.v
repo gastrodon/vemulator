@@ -22,6 +22,24 @@ fn sub_carry(value byte, diff byte) (byte, bool) {
 	return result, result > value
 }
 
+fn add_carry_u16(value u16, diff u16) (u16, bool) {
+	if diff == 0 {
+		return value, false
+	}
+
+	result := value + diff
+	return result, result < value
+}
+
+fn sub_carry_u16(value u16, diff u16) (u16, bool) {
+	if diff == 0 {
+		return value, false
+	}
+
+	result := value - diff
+	return result, result > value
+}
+
 fn shift_left_wrap_carry(value byte) (byte, bool) {
 	carry := value & 0x80
 	return (value << 1) | byte(carry) >> 7, carry == 0x80

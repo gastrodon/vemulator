@@ -230,10 +230,27 @@ fn test_dad_b() {
 	state.load([byte(dad_b)]) or { assert false }
 	state.execute()
 
-	target := 0xccff + 0x2222
+	mut target := 0xccff + 0x2222
 	assert join(state.h, state.l) == target
 	assert state.h == target >> 8
 	assert state.l == target & 0xff
+	assert !state.carry
+
+	state = State{
+		b: 0xff
+		c: 0xff
+		h: 0xcc
+		l: 0xff
+	}
+
+	state.load([byte(dad_b)]) or { assert false }
+	state.execute()
+
+	target = 0xccfe
+	assert join(state.h, state.l) == target
+	assert state.h == target >> 8
+	assert state.l == target & 0xff
+	assert state.carry
 }
 
 fn test_sta_a16() {

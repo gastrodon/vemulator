@@ -98,20 +98,10 @@ fn (mut state State) execute() {
 				state.a, state.carry = shift_left_wrap_carry(state.a)
 			}
 			dad_b {
-				hl := join(state.h, state.l) + join(state.b, state.c)
+				hl, carry := add_carry_u16(join(state.h, state.l), join(state.b, state.c))
+				state.carry = carry
 				state.h = byte(hl >> 8)
 				state.l = byte(hl & 0xff)
-			}
-			sta {
-				state.ram[join(state.rom[pc + 2], state.rom[pc + 1])] = state.a
-				pc += 2
-			}
-			lda {
-				state.a = state.ram[join(state.rom[pc + 2], state.rom[pc + 1])]
-				pc += 2
-			}
-			inr_a {
-				state.a++
 			}
 			else {}
 		}
