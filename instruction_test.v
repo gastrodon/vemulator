@@ -80,6 +80,42 @@ fn test_inr_b_acarry() {
 	assert !state.zero
 }
 
+fn test_inr_b_sign() {
+	mut state := State{
+		b: 0x7f
+	}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0x80
+	assert state.sign
+
+	state = State{}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 1
+	assert !state.sign
+}
+
+fn test_inr_b_parity() {
+	mut state := State{
+		b: 0b10
+	}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0b11
+	assert state.parity
+
+	state = State{}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 1
+	assert !state.parity
+}
+
 fn test_dcr_b() {
 	mut state := State{}
 	state.load([byte(0x05)]) or { assert false }
@@ -111,6 +147,44 @@ fn test_dcr_b_acarry() {
 	assert state.b == 0b000011111
 	assert !state.zero
 	assert state.acarry
+}
+
+fn test_dcr_b_sign() {
+	mut state := State{}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0xff
+	assert state.sign
+
+	state = State{
+		b: 0x7f
+	}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0x7e
+	assert !state.sign
+}
+
+fn test_dcr_b_parity() {
+	mut state := State{
+		b: 0b100
+	}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0b11
+	assert state.parity
+
+	state = State{
+		b: 0b11
+	}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 2
+	assert !state.parity
 }
 
 fn test_mvi_b_d8() {

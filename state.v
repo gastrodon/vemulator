@@ -45,6 +45,10 @@ fn (mut state State) set_acarry(value byte) {
 	state.acarry = (value & 0x10) == 0x10
 }
 
+fn (mut state State) set_parity(value byte) {
+	state.parity = even_parity(value)
+}
+
 fn (mut state State) set_sign(value byte) {
 	state.sign = (value & 0x80) == 0x80
 }
@@ -75,14 +79,16 @@ fn (mut state State) execute() {
 			inr_b {
 				state.b++
 				state.set_acarry(state.b)
-				state.set_zero(state.b)
+				state.set_parity(state.b)
 				state.set_sign(state.b)
+				state.set_zero(state.b)
 			}
 			dcr_b {
 				state.b--
 				state.set_acarry(state.b)
-				state.set_zero(state.b)
+				state.set_parity(state.b)
 				state.set_sign(state.b)
+				state.set_zero(state.b)
 			}
 			mvi_b {
 				state.b = state.rom[pc + 1]
