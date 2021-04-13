@@ -2,7 +2,7 @@ module main
 
 fn test_nop() {
 	mut state := State{}
-	state.load([byte(0x00), 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38]) or { assert false }
+	state.load([byte(nop), 0x08, 0x10, 0x18, 0x20, 0x28, 0x30, 0x38]) or { assert false }
 	state.execute()
 
 	fresh := State{}
@@ -20,7 +20,7 @@ fn test_nop() {
 
 fn test_lxi_b() {
 	mut state := State{}
-	state.load([byte(0x01), 0xdd, 0xff]) or { assert false }
+	state.load([byte(lxi_b), 0xdd, 0xff]) or { assert false }
 	state.execute()
 
 	assert state.b == 0xff
@@ -30,7 +30,7 @@ fn test_lxi_b() {
 
 fn test_stax_b() {
 	mut state := State{}
-	state.load([byte(0x3c), 0x3c, 0x02]) or { assert false }
+	state.load([byte(inr_a), inr_a, stax_b]) or { assert false }
 	state.execute()
 
 	assert state.b == 0
@@ -39,7 +39,7 @@ fn test_stax_b() {
 
 fn test_inx_b() {
 	mut state := State{}
-	state.load([byte(0x03), 0x03, 0x03]) or { assert false }
+	state.load([byte(inx_b), inx_b, inx_b]) or { assert false }
 	state.execute()
 
 	assert state.b == 0
@@ -48,7 +48,7 @@ fn test_inx_b() {
 
 fn test_inr_b() {
 	mut state := State{}
-	state.load([byte(0x04)]) or { assert false }
+	state.load([byte(inr_b)]) or { assert false }
 	state.execute()
 
 	assert state.b == 0x01
@@ -118,7 +118,7 @@ fn test_inr_b_parity() {
 
 fn test_dcr_b() {
 	mut state := State{}
-	state.load([byte(0x05)]) or { assert false }
+	state.load([byte(dcr_b)]) or { assert false }
 	state.execute()
 
 	assert state.b == 0xff
@@ -189,7 +189,7 @@ fn test_dcr_b_parity() {
 
 fn test_mvi_b_d8() {
 	mut state := State{}
-	state.load([byte(0x06), 0xcc]) or { assert false }
+	state.load([byte(mvi_b), 0xcc]) or { assert false }
 	state.execute()
 
 	assert state.b == 0xcc
@@ -200,7 +200,7 @@ fn test_rlc() {
 		a: 0x01
 	}
 
-	state.load([byte(0x07)]) or { assert false }
+	state.load([byte(rlc)]) or { assert false }
 	state.execute()
 
 	assert state.a == 0x02
@@ -211,7 +211,7 @@ fn test_rlc_acarry() {
 		a: 0b10000000
 	}
 
-	state.load([byte(0x07)]) or { assert false }
+	state.load([byte(rlc)]) or { assert false }
 	state.execute()
 
 	assert state.a == 0b00000001
@@ -225,7 +225,7 @@ fn test_dad_b() {
 		l: 0xff
 	}
 
-	state.load([byte(0x09)]) or { assert false }
+	state.load([byte(dad_b)]) or { assert false }
 	state.execute()
 
 	target := 0xccff + 0x2222
@@ -236,7 +236,7 @@ fn test_dad_b() {
 
 fn test_sta_a16() {
 	mut state := State{}
-	state.load([byte(0x3c), 0x3c, 0x32, 0x05, 0x00]) or { assert false }
+	state.load([byte(inr_a), 0x3c, 0x32, dcr_b, nop]) or { assert false }
 	state.execute()
 
 	assert state.ram[0x05] == 2
@@ -244,7 +244,7 @@ fn test_sta_a16() {
 
 fn test_inr_a() {
 	mut state := State{}
-	state.load([byte(0x3c), 0x3c, 0x3c]) or { assert false }
+	state.load([byte(inr_a), 0x3c, 0x3c]) or { assert false }
 	state.execute()
 
 	assert state.a == 3
