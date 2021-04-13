@@ -113,25 +113,18 @@ fn (mut state State) execute() {
 }
 
 fn (state State) print() {
-	print('a  $state.a\tsp $state.sp\tpc $state.pc\n')
-	print('b  $state.b\tc  $state.c\td  $state.d\tac ${x_if(state.acarry)}\tc  ${x_if(state.carry)}\n')
-	print('e  $state.e\th  $state.h\tl  $state.l\tp  ${x_if(state.parity)}\ts  ${x_if(state.sign)}\tz  ${x_if(state.zero)}\n')
-
-	print('\nmem  | ')
-
-	prefix := ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-	for fix in prefix {
-		print(' $fix ')
-	}
+	print('a  0x${state.a:x}\tsp 0x${state.sp:x}\tpc 0x${state.pc:x}\n')
+	print('b  0x${state.b:x}\tc  0x${state.c:x}\td  0x${state.d:x}\tac ${x_if(state.acarry)}\tc  ${x_if(state.carry)}\n')
+	print('e  0x${state.e:x}\th  0x${state.h:x}\tl  0x${state.l:x}\tp  ${x_if(state.parity)}\ts  ${x_if(state.sign)}\tz  ${x_if(state.zero)}\n')
 
 	width := 16
 	height := state.ram.len / 16
-
+	prefix := ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 	for line in 0 .. height {
 		print('\n0x${prefix[line]}0 | ')
 
 		for cell in state.ram[line * width..line * width + width] {
-			print(' $cell ')
+			print(' ${cell:x} ')
 		}
 	}
 
