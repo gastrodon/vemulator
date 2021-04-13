@@ -42,11 +42,11 @@ fn (mut state State) load(rom []byte) ?u16 {
 }
 
 fn (mut state State) set_acarry(value byte) {
-	state.acarry = value >> 4 & 1 == 1
+	state.acarry = (value & 0x10) == 0x10
 }
 
 fn (mut state State) set_sign(value byte) {
-	state.sign = value >> 7 & 1 == 1
+	state.sign = (value & 0x80) == 0x80
 }
 
 fn (mut state State) set_zero(value byte) {
