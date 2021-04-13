@@ -32,6 +32,34 @@ fn test_sub_carry() {
 	assert !carry
 }
 
+fn test_shift_left_wrap_carry() {
+	mut result, mut carry := shift_left_wrap_carry(0b10000001)
+	assert result == 0b11
+	assert carry
+
+	result, carry = shift_left_wrap_carry(0b10000000)
+	assert result == 0b1
+	assert carry
+
+	result, carry = shift_left_wrap_carry(0b01000000)
+	assert result == 0b10000000
+	assert !carry
+}
+
+fn test_shift_right_wrap_carry() {
+	mut result, mut carry := shift_right_wrap_carry(0b10000001)
+	assert result == 0b11000000
+	assert carry
+
+	result, carry = shift_right_wrap_carry(0b10000000)
+	assert result == 0b01000000
+	assert !carry
+
+	result, carry = shift_right_wrap_carry(0b00000001)
+	assert result == 0b10000000
+	assert carry
+}
+
 fn test_even_parity() {
 	assert even_parity(0b1) == false
 	assert even_parity(0b10) == false

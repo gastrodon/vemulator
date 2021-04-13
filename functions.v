@@ -22,6 +22,16 @@ fn sub_carry(value byte, diff byte) (byte, bool) {
 	return result, result > value
 }
 
+fn shift_left_wrap_carry(value byte) (byte, bool) {
+	carry := value & 0x80
+	return (value << 1) | byte(carry) >> 7, carry == 0x80
+}
+
+fn shift_right_wrap_carry(value byte) (byte, bool) {
+	carry := value & 1
+	return (value >> 1) | byte(carry) << 7, carry == 1
+}
+
 fn even_parity(value byte) bool {
 	mut result := true
 	if value == 0 {

@@ -95,8 +95,7 @@ fn (mut state State) execute() {
 				pc++
 			}
 			rlc {
-				state.acarry = 1 == state.a >> 7
-				state.a = (state.a << 1) | byte(state.acarry)
+				state.a, state.carry = shift_left_wrap_carry(state.a)
 			}
 			dad_b {
 				hl := join(state.h, state.l) + join(state.b, state.c)

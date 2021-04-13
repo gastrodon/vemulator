@@ -204,6 +204,7 @@ fn test_rlc() {
 	state.execute()
 
 	assert state.a == 0x02
+	assert !state.carry
 }
 
 fn test_rlc_acarry() {
@@ -215,6 +216,7 @@ fn test_rlc_acarry() {
 	state.execute()
 
 	assert state.a == 0b00000001
+	assert state.carry
 }
 
 fn test_dad_b() {
