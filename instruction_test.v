@@ -52,7 +52,32 @@ fn test_inr_b() {
 	state.execute()
 
 	assert state.b == 0x01
-	assert !state.carry
+	assert !state.acarry
+	assert !state.zero
+}
+
+fn test_inr_b_zero() {
+	mut state := State{
+		b: 0xff
+	}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0
+	assert !state.acarry
+	assert state.zero
+}
+
+fn test_inr_b_acarry() {
+	mut state := State{
+		b: 0b00001111
+	}
+	state.load([byte(inr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0b00010000
+	assert state.acarry
+	assert !state.zero
 }
 
 fn test_dcr_b() {
@@ -62,6 +87,30 @@ fn test_dcr_b() {
 
 	assert state.b == 0xff
 	assert !state.carry
+}
+
+fn test_dcr_b_zero() {
+	mut state := State{
+		b: 0x01
+	}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0
+	assert state.zero
+	assert !state.acarry
+}
+
+fn test_dcr_b_acarry() {
+	mut state := State{
+		b: 0b00100000
+	}
+	state.load([byte(dcr_b)]) or { assert false }
+	state.execute()
+
+	assert state.b == 0b000011111
+	assert !state.zero
+	assert state.acarry
 }
 
 fn test_mvi_b_d8() {

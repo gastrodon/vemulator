@@ -41,6 +41,14 @@ fn (mut state State) load(rom []byte) ?u16 {
 	return index
 }
 
+fn (mut state State) set_acarry(value byte) {
+	state.acarry = value >> 4 & 1 == 1
+}
+
+fn (mut state State) set_zero(value byte) {
+	state.zero = value == 0
+}
+
 fn (mut state State) execute() {
 	mut pc := 0
 	for pc != 0xffff {
@@ -61,12 +69,14 @@ fn (mut state State) execute() {
 				state.c = byte(result & 0xff)
 			}
 			inr_b {
-				// TODO flags
 				state.b++
+				state.set_acarry(state.b)
+				state.set_zero(state.b)
 			}
 			dcr_b {
-				// TODO flags
 				state.b--
+				state.set_acarry(state.b)
+				state.set_zero(state.b)
 			}
 			mvi_b {
 				state.b = state.rom[pc + 1]
